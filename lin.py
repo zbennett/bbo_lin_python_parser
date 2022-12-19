@@ -1,5 +1,6 @@
 import logging
 import re
+import fileinput
 import urllib.parse
 from collections import defaultdict
 from enum import Enum
@@ -283,6 +284,21 @@ def parse_multi_lin(file_path: Path) -> List[DealRecord]:
     :param file_path: path to multi-board LIN file
     :return: A list of parsed DealRecords corresponding to the session in the LIN file
     """
+
+    # Format the file as needed
+    edit = False
+    with open(file_path, "r") as rfile:
+        s = rfile.read()
+        c = s[0:8]
+        if c != "qx||pg||":
+            edit = True
+        if edit :
+            rplce = re.sub('qx', "\nqx", s)
+            replc2 = re.sub('(?<!\n)^', "qx||pg||", rplce)
+    if edit:
+        with open(file_path, "w") as wfile:
+            wfile.write(replc2)
+
     with open(file_path) as lin_file:
         header = _combine_header(lin_file)
         parsed_header = _parse_lin_string(header)

@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 
 from deal import Card, Deal
 from deal_enums import BiddingSuit, Direction
-from play_utils import calculate_score
+from play_utils import calculate_score, calculate_vul, calculate_rubber_score, calculate_rubber_points
 
 
 @dataclass(frozen=True)
@@ -90,6 +90,7 @@ class BoardRecord:
     commentary: Optional[List[Commentary]]
     declarer_vulnerable: InitVar[bool] = None
     score: Optional[int] = None
+    zach_score: Optional[int] = None
     board_name: Optional[str] = None
 
     def __post_init__(self, declarer_vulnerable: bool):
@@ -100,6 +101,13 @@ class BoardRecord:
                 self.contract.level, self.contract.suit, self.contract.doubled, self.tricks, declarer_vulnerable
             )
             super().__setattr__("score", score)  # Cannot assign directly because dataclass is frozen
+        
+        if self.zach_score is None:
+            score = calculate_rubber_score(self.contract.level, self.contract.suit, self.contract.doubled, self.tricks)
+            super().__setattr__("zach_score", score)  # Cannot assign directly because dataclass is frozen
+            
+            # calculate_vul(self.declarer, self.zach_score)
+            # calculate_rubber_points(self.contract.level, self.contract.suit, self.contract.doubled, self.tricks, self.declarer)
 
     def __hash__(self):
         return hash(
