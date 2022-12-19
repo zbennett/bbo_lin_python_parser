@@ -1,19 +1,36 @@
 from deal import Card, PlayerHand
 from deal_enums import Suit, Direction
+from play_utils import clear_rubber_points, print_rubber_points, calculate_vul, calculate_rubber_points, print_current_rubber_score, new_rubber
 from lin import parse_single_lin, parse_multi_lin
 from board_record import Contract
 import math
 import sys
+import argparse
 
 rubber_inc = 1
 game_inc = 1
 total_games = 0
-n = len(sys.argv)
-rubber_lens = sys.argv
-rubber_lens.pop(0)
+rubbers = 0
 
-# thing = parse_single_lin("3073386882.lin")
-thing = parse_multi_lin("boards2.lin")
+parser = argparse.ArgumentParser()
+parser.add_argument('file_name', type=str)
+parser.add_argument('--rubbers', nargs='+')
+parser.add_argument('--single', action='store_true')
+
+args = parser.parse_args()
+
+file_name = args.file_name
+rubber_list = args.rubbers
+single =args.single
+if args.rubbers == None :
+    rubber_list = []
+
+if(single) :
+    thing = parse_single_lin(file_name)
+else:
+    thing = parse_multi_lin(file_name)
+
+
 
 ns_points = 0
 ew_points = 0
@@ -63,7 +80,7 @@ def clear_rubber():
     global rubber_inc
     global game_inc
     global total_games
-    global rubber_lens
+    global rubber_list
     global n_points_rubber
     global s_points_rubber
     global e_points_rubber
@@ -120,8 +137,8 @@ def clear_rubber():
     total_games += game_inc
     game_inc = 0
     rubber_inc += 1
-    if len(rubber_lens) > 0 :
-        rubber_lens.pop(0)
+    if len(rubber_list) > 0 :
+        rubber_list.pop(0)
     n_points_rubber = 0
     s_points_rubber = 0
     e_points_rubber = 0
@@ -139,6 +156,9 @@ def clear_rubber():
 
     ns_points_rubber = 0
     ew_points_rubber = 0
+
+    print_rubber_points()
+    clear_rubber_points()
 
 def print_points(rubber):
     global n_points_rubber
@@ -203,7 +223,9 @@ def print_points(rubber):
     print()
     print(bRecords.names.get(Direction.NORTH), "/", bRecords.names.get(Direction.SOUTH), "Points:", ns_points_rubber, "(", weird_division(ns_points_rubber, ns_points_rubber + ew_points_rubber),"%)")
     print(bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Points:", ew_points_rubber, "(", weird_division(ew_points_rubber, ns_points_rubber + ew_points_rubber),"%)")
-
+    print()
+    if rubber == "final":
+        print("Current Rubber:", print_current_rubber_score())
 
 
 
@@ -222,6 +244,7 @@ for dealio in thing:
         # print("score: ", bRecords.score)
         # print("ns_vul", dealio.deal.ns_vulnerable)
         # print("ew_vul", dealio.deal.ew_vulnerable)
+        # print(bRecords.)
         ns_points_rubber += dealio.deal.hands.get(Direction.NORTH).getPoints()
         ns_points_rubber += dealio.deal.hands.get(Direction.SOUTH).getPoints()
         ew_points_rubber += dealio.deal.hands.get(Direction.EAST).getPoints()
@@ -230,6 +253,9 @@ for dealio in thing:
         s_points_rubber += dealio.deal.hands.get(Direction.SOUTH).getPoints()
         e_points_rubber += dealio.deal.hands.get(Direction.EAST).getPoints()
         w_points_rubber += dealio.deal.hands.get(Direction.WEST).getPoints()
+
+        calculate_vul(bRecords.declarer, bRecords.zach_score)
+        calculate_rubber_points(bRecords.contract.level, bRecords.contract.suit, bRecords.contract.doubled, bRecords.tricks, bRecords.declarer)
 
         if dealio.deal.hands.get(Direction.NORTH).getPoints() > 12 :
             n_opening_hands += 1
@@ -256,11 +282,9 @@ for dealio in thing:
             w_played_rubber  +=1
             if (bRecords.tricks - 6 ) >= bRecords.contract.level:
                 w_made_rubber += 1
-        if len(rubber_lens) > 0 :
-            # print (game_inc, rubber_lens[0])
-            if game_inc == int(rubber_lens[0]):
-                print_points(str(rubber_inc))
-                clear_rubber()
+        if new_rubber() :
+            print_points(str(rubber_inc))
+            clear_rubber()
         game_inc += 1
                 
 print_points("final")
