@@ -165,8 +165,8 @@ def clear_rubber():
 
     rub_points = get_rubber_points()
     if rub_points[0] + rub_points[1] != 0 :
-        print("____",bRecords.names.get(Direction.NORTH), "/", bRecords.names.get(Direction.SOUTH), "Rubber Points","____", rub_points[0])
-        print("____",bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Rubber Points","____", rub_points[1])
+        print("*",bRecords.names.get(Direction.NORTH), "/", bRecords.names.get(Direction.SOUTH), "Rubber Score:", rub_points[0],"*")
+        print("*",bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Rubber Score:", rub_points[1],"*")
     
     clear_rubber_points()
 
@@ -193,9 +193,9 @@ def print_points(rubber):
     total_points = n_points_rubber + s_points_rubber + e_points_rubber + w_points_rubber
     if rubber == "final":
         if game_inc > 0 :
-            print()
-            print_str2 = "Unfinished Rubber" + "(" + str(game_inc-1) + " games)"
-            print("___________", print_str2, "_____________")
+            print("--------------------------------------------------------")
+            print_str2 = "Current Rubber" + "(" + str(game_inc-1) + " games)"
+            print("          ***", print_str2, "***          ")
             print()
             print_current_rubber_score()
         clear_rubber()
@@ -219,31 +219,32 @@ def print_points(rubber):
         ns_points_rubber = ns_points
         ew_points_rubber = ew_points
     
-    
-    print()
-    print("___________", print_str, "_____________")
-    print(bRecords.names.get(Direction.NORTH), "Points:", n_points_rubber, "(", weird_division(n_points_rubber, total_points),"%)")
-    print(bRecords.names.get(Direction.SOUTH), "Points:", s_points_rubber, "(", weird_division(s_points_rubber, total_points),"%)")
-    print(bRecords.names.get(Direction.EAST), "Points:", e_points_rubber, "(", weird_division(e_points_rubber, total_points),"%)")
-    print(bRecords.names.get(Direction.WEST), "Points:", w_points_rubber, "(", weird_division(w_points_rubber, total_points),"%)")
+    print("--------------------------------------------------------")
+    # print()
+    print("          ***", print_str, "***          ")
+    print(bRecords.names.get(Direction.NORTH), "Points:", n_points_rubber, "(", weird_division(n_points_rubber, total_points),"%)",bRecords.names.get(Direction.SOUTH), "Points:", s_points_rubber, "(", weird_division(s_points_rubber, total_points),"%)")
+    # print(bRecords.names.get(Direction.SOUTH), "Points:", s_points_rubber, "(", weird_division(s_points_rubber, total_points),"%)")
+    print(bRecords.names.get(Direction.EAST), "Points:", e_points_rubber, "(", weird_division(e_points_rubber, total_points),"%)",bRecords.names.get(Direction.WEST), "Points:", w_points_rubber, "(", weird_division(w_points_rubber, total_points),"%)")
+    # print(bRecords.names.get(Direction.WEST), "Points:", w_points_rubber, "(", weird_division(w_points_rubber, total_points),"%)")
     print()
     # print(bRecords.names.get(Direction.NORTH), "Opening hands:", n_opening_hands)
     # print(bRecords.names.get(Direction.SOUTH), "Opening hands:", s_opening_hands)
     # print(bRecords.names.get(Direction.EAST), "Opening hands:", e_opening_hands)
     # print(bRecords.names.get(Direction.WEST), "Opening hands:", w_opening_hands)
     # print()
-    print(bRecords.names.get(Direction.NORTH), "Played:", n_played_rubber, "and made:", n_made_rubber, "(", weird_division(n_made_rubber, n_played_rubber),"%)")
-    print(bRecords.names.get(Direction.SOUTH), "Played:", s_played_rubber, "and made:", s_made_rubber, "(", weird_division(s_made_rubber,s_played_rubber),"%)")
-    print(bRecords.names.get(Direction.EAST), "Played:", e_played_rubber, "and made:", e_made_rubber, "(", weird_division(e_made_rubber,e_played_rubber),"%)")
-    print(bRecords.names.get(Direction.WEST), "Played:", w_played_rubber, "and made:", w_made_rubber, "(", weird_division(w_made_rubber,w_played_rubber),"%)")
-    print()
+    if rubber == "final":
+        print(bRecords.names.get(Direction.NORTH), "Played:", n_played_rubber, "and made:", n_made_rubber, "(", weird_division(n_made_rubber, n_played_rubber),"%)")
+        print(bRecords.names.get(Direction.SOUTH), "Played:", s_played_rubber, "and made:", s_made_rubber, "(", weird_division(s_made_rubber,s_played_rubber),"%)")
+        print(bRecords.names.get(Direction.EAST), "Played:", e_played_rubber, "and made:", e_made_rubber, "(", weird_division(e_made_rubber,e_played_rubber),"%)")
+        print(bRecords.names.get(Direction.WEST), "Played:", w_played_rubber, "and made:", w_made_rubber, "(", weird_division(w_made_rubber,w_played_rubber),"%)")
+        print()
     print(bRecords.names.get(Direction.NORTH), "/", bRecords.names.get(Direction.SOUTH), "Points:", ns_points_rubber, "(", weird_division(ns_points_rubber, ns_points_rubber + ew_points_rubber),"%)")
     print(bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Points:", ew_points_rubber, "(", weird_division(ew_points_rubber, ns_points_rubber + ew_points_rubber),"%)")
     print()
     if rubber == "final":
         tot_rub = get_total_rubber_score()
-        print("____",bRecords.names.get(Direction.NORTH), "/", bRecords.names.get(Direction.SOUTH), "Total Rubber Points","____", tot_rub[0])
-        print("____",bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Total Rubber Points","____", tot_rub[1])
+        print("*",bRecords.names.get(Direction.NORTH), "/", bRecords.names.get(Direction.SOUTH), "Total Rubber Score:", tot_rub[0],"*")
+        print("*",bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Total Rubber Score:", tot_rub[1],"*")
 
 
 
