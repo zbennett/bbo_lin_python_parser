@@ -9,7 +9,7 @@ from typing import Dict, List, Optional, Tuple
 
 from bids import canonicalize_bid
 from board_record import BidMetadata, BoardRecord, Commentary, Contract, DealRecord
-from deal import Card, Deal
+from deal import Card, Deal, PlayerHand
 from deal_enums import BiddingSuit, Direction, Suit
 from deal_utils import from_lin_deal
 from play_utils import trick_evaluator

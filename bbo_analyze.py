@@ -1,6 +1,6 @@
 from deal import Card, PlayerHand
 from deal_enums import Suit, Direction
-from play_utils import clear_rubber_points, print_rubber_points, calculate_vul, calculate_rubber_points, print_current_rubber_score, new_rubber, print_total_rubber_score
+from play_utils import clear_rubber_points, get_rubber_points, calculate_vul, calculate_rubber_points, print_current_rubber_score, new_rubber, get_total_rubber_score
 from lin import parse_single_lin, parse_multi_lin
 from board_record import Contract
 import math
@@ -163,7 +163,11 @@ def clear_rubber():
     ns_points_rubber = 0
     ew_points_rubber = 0
 
-    print_rubber_points()
+    rub_points = get_rubber_points()
+    if rub_points[0] + rub_points[1] != 0 :
+        print("____",bRecords.names.get(Direction.NORTH), "/", bRecords.names.get(Direction.SOUTH), "Rubber Points","____", rub_points[0])
+        print("____",bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Rubber Points","____", rub_points[1])
+    
     clear_rubber_points()
 
 def print_points(rubber):
@@ -188,6 +192,12 @@ def print_points(rubber):
     print_str = "Rubber " + rubber + " (" + str(game_inc) + " games)"
     total_points = n_points_rubber + s_points_rubber + e_points_rubber + w_points_rubber
     if rubber == "final":
+        if game_inc > 0 :
+            print()
+            print_str2 = "Unfinished Rubber" + "(" + str(game_inc-1) + " games)"
+            print("___________", print_str2, "_____________")
+            print()
+            print_current_rubber_score()
         clear_rubber()
         print_str = "Total" + " (" + str(total_games - 1) + " games)"
         total_points = n_points + s_points + e_points + w_points
@@ -231,8 +241,9 @@ def print_points(rubber):
     print(bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Points:", ew_points_rubber, "(", weird_division(ew_points_rubber, ns_points_rubber + ew_points_rubber),"%)")
     print()
     if rubber == "final":
-        print_current_rubber_score()
-        print_total_rubber_score()
+        tot_rub = get_total_rubber_score()
+        print("____",bRecords.names.get(Direction.NORTH), "/", bRecords.names.get(Direction.SOUTH), "Total Rubber Points","____", tot_rub[0])
+        print("____",bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Total Rubber Points","____", tot_rub[1])
 
 
 
@@ -262,7 +273,13 @@ for dealio in thing:
         w_points_rubber += dealio.deal.hands.get(Direction.WEST).getPoints()
 
         calculate_vul(bRecords.declarer, bRecords.zach_score)
-        calculate_rubber_points(bRecords.contract.level, bRecords.contract.suit, bRecords.contract.doubled, bRecords.tricks, bRecords.declarer)
+        # honors = dealio.deal.hands.get(bRecords.declarer).getHonors(bRecords.contract.suit)
+        # if honors != 0 :
+        #     print("HONORS:",honors)
+        #     print("Bidder: ", bRecords.names.get(bRecords.declarer))
+        #     print("contract: ", bRecords.contract)
+        #     print("Tricks won:", bRecords.tricks)
+        calculate_rubber_points(bRecords.contract.level, bRecords.contract.suit, bRecords.contract.doubled, bRecords.tricks, bRecords.declarer, dealio.deal.hands.get(bRecords.declarer).getHonors(bRecords.contract.suit))
 
         if dealio.deal.hands.get(Direction.NORTH).getPoints() > 12 :
             n_opening_hands += 1

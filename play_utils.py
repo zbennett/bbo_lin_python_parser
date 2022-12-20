@@ -171,7 +171,8 @@ def clear_rubber_points():
     ew_rubber_points = 0
     ns_rubber_points = 0
 
-def print_rubber_points():
+def get_rubber_points():
+    return [ns_rubber_points, ew_rubber_points]
     if ns_rubber_points + ew_rubber_points != 0 :
         print("____NS RUBBER POINTS_____", ns_rubber_points)
         print("____EW RUBBER POINTS_____", ew_rubber_points)
@@ -182,7 +183,8 @@ def print_current_rubber_score():
     print("N/S Vul:", ns_vul)
     print("E/W Vul:", ew_vul)
 
-def print_total_rubber_score():
+def get_total_rubber_score():
+    return [ns_total_rubber_points, ew_total_rubber_points]
     print("____NS TOTAL RUBBER POINTS_____", ns_total_rubber_points)
     print("____EW TOTAL RUBBER POINTS_____", ew_total_rubber_points)
 
@@ -208,7 +210,7 @@ def calculate_rubber_score(level: int, suit: Optional[BiddingSuit], doubled: int
         # print("Game points:", 0)
         return 0
 
-def calculate_rubber_points(level: int, suit: Optional[BiddingSuit], doubled: int, tricks: int, declarer: Direction):
+def calculate_rubber_points(level: int, suit: Optional[BiddingSuit], doubled: int, tricks: int, declarer: Direction, honors: int):
     """
     :param level: contract level (4 in 4S)
     :param suit: contract bidding suit
@@ -219,6 +221,7 @@ def calculate_rubber_points(level: int, suit: Optional[BiddingSuit], doubled: in
     """
     global ns_rubber_points
     global ew_rubber_points
+
 
     if declarer == Direction.NORTH or declarer == Direction.SOUTH:
         vulnerable = ns_vul
@@ -251,13 +254,15 @@ def calculate_rubber_points(level: int, suit: Optional[BiddingSuit], doubled: in
             )
             score -= score_dict[score_key]
         points = score
-
+    
     if declarer == Direction.NORTH or declarer == Direction.SOUTH:
+        ns_rubber_points += honors
         if points < 0 :
             ew_rubber_points += abs(points) 
         else:
             ns_rubber_points += points
     else:
+        ew_rubber_points += honors
         if points < 0 :
             ns_rubber_points += abs(points) 
         else:

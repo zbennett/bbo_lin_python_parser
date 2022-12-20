@@ -1,5 +1,5 @@
 from __future__ import annotations
-from deal_enums import Direction, Rank, Suit
+from deal_enums import Direction, Rank, Suit, BiddingSuit
 from typing import Dict, Iterable, List
 
 from functools import total_ordering
@@ -99,6 +99,42 @@ class PlayerHand:
                 elif rank == Rank.JACK:
                     points += 1
         return points
+    
+    def getHonors(self, suit: BiddingSuit):
+        if suit == None:
+            return 0
+        honors = 0
+        if suit == BiddingSuit.NO_TRUMP :
+            for rank in self.suits[Suit.SPADES] :
+                if rank == Rank.ACE:
+                    honors += 1
+            for rank in self.suits[Suit.CLUBS] :
+                if rank == Rank.ACE:
+                    honors += 1
+            for rank in self.suits[Suit.DIAMONDS] :
+                if rank == Rank.ACE:
+                    honors += 1
+            for rank in self.suits[Suit.HEARTS] :
+                if rank == Rank.ACE:
+                    honors += 1
+        else :
+            for rank in self.suits[suit.value[1]] :
+                if rank == Rank.ACE:
+                    honors += 1
+                elif rank == Rank.KING:
+                    honors += 1
+                elif rank == Rank.QUEEN:
+                    honors += 1
+                elif rank == Rank.JACK:
+                    honors += 1
+                elif rank == Rank.TEN:
+                    honors += 1
+        if honors == 4 :
+            return 100
+        elif honors == 5 :
+            return 150
+        else:
+            return 0
     
 
 
