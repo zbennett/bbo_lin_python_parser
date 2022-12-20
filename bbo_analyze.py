@@ -196,7 +196,6 @@ def print_points(rubber):
             print("--------------------------------------------------------")
             print_str2 = "Current Rubber" + "(" + str(game_inc-1) + " games)"
             print("          ***", print_str2, "***          ")
-            print()
             print_current_rubber_score()
         clear_rubber()
         print_str = "Total" + " (" + str(total_games - 1) + " games)"
@@ -238,6 +237,11 @@ def print_points(rubber):
         print(bRecords.names.get(Direction.EAST), "Played:", e_played_rubber, "and made:", e_made_rubber, "(", weird_division(e_made_rubber,e_played_rubber),"%)")
         print(bRecords.names.get(Direction.WEST), "Played:", w_played_rubber, "and made:", w_made_rubber, "(", weird_division(w_made_rubber,w_played_rubber),"%)")
         print()
+        # print(bRecords.names.get(Direction.NORTH), "Opening Hands:", n_opening_hands)
+        # print(bRecords.names.get(Direction.SOUTH), "Opening Hands:", s_opening_hands)
+        # print(bRecords.names.get(Direction.EAST), "Opening Hands:", e_opening_hands)
+        # print(bRecords.names.get(Direction.WEST), "Opening Hands:", w_opening_hands)
+        # print()
     print(bRecords.names.get(Direction.NORTH), "/", bRecords.names.get(Direction.SOUTH), "Points:", ns_points_rubber, "(", weird_division(ns_points_rubber, ns_points_rubber + ew_points_rubber),"%)")
     print(bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Points:", ew_points_rubber, "(", weird_division(ew_points_rubber, ns_points_rubber + ew_points_rubber),"%)")
     print()
