@@ -137,7 +137,7 @@ def calculate_vul(declarer: Direction, points):
             ns_leg = 0
             ew_leg = 0
         else:
-            ns_leg = points
+            ns_leg += points
     else:
         if points + ew_leg >= 100 :
             if ew_vul == True:
@@ -154,7 +154,7 @@ def calculate_vul(declarer: Direction, points):
             ew_leg = 0
             ns_leg = 0
         else:
-            ew_leg = points
+            ew_leg += points
 
     # print("Nort/South Vul:", ns_vul, "North/South Leg:", ns_leg)
     # print("East/West Vul:", ew_vul, "East/West Leg:", ew_leg)
@@ -210,7 +210,7 @@ def calculate_rubber_score(level: int, suit: Optional[BiddingSuit], doubled: int
         # print("Game points:", 0)
         return 0
 
-def calculate_rubber_points(level: int, suit: Optional[BiddingSuit], doubled: int, tricks: int, declarer: Direction, honors: int):
+def calculate_rubber_points(level: int, suit: Optional[BiddingSuit], doubled: int, tricks: int, declarer: Direction, honors: int, debug:bool):
     """
     :param level: contract level (4 in 4S)
     :param suit: contract bidding suit
@@ -267,9 +267,9 @@ def calculate_rubber_points(level: int, suit: Optional[BiddingSuit], doubled: in
             ns_rubber_points += abs(points) 
         else:
             ew_rubber_points += points
-
-    # print("North/South Rubber Points:", ns_rubber_points)
-    # print("East/West Rubber Points:", ew_rubber_points)
+    if debug :
+        print("North/South Rubber Points:", ns_rubber_points)
+        print("East/West Rubber Points:", ew_rubber_points)
 
 def calculate_score(level: int, suit: Optional[BiddingSuit], doubled: int, tricks: int, vulnerable: bool) -> int:
     """

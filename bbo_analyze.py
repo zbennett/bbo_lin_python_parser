@@ -16,12 +16,14 @@ parser = argparse.ArgumentParser()
 parser.add_argument('file_name', type=str)
 parser.add_argument('--rubbers', nargs='+')
 parser.add_argument('--single', action='store_true')
+parser.add_argument('--debug', action='store_true')
 
 args = parser.parse_args()
 
 file_name = args.file_name
 rubber_list = args.rubbers
 single =args.single
+debug = args.debug
 if args.rubbers == None :
     rubber_list = []
 
@@ -192,7 +194,7 @@ def print_points(rubber):
     print_str = "Rubber " + rubber + " (" + str(game_inc) + " games)"
     total_points = n_points_rubber + s_points_rubber + e_points_rubber + w_points_rubber
     if rubber == "final":
-        if game_inc > 0 :
+        if game_inc > 1 :
             print("--------------------------------------------------------")
             print_str2 = "Current Rubber" + "(" + str(game_inc-1) + " games)"
             print("          ***", print_str2, "***          ")
@@ -284,7 +286,7 @@ for dealio in thing:
         #     print("Bidder: ", bRecords.names.get(bRecords.declarer))
         #     print("contract: ", bRecords.contract)
         #     print("Tricks won:", bRecords.tricks)
-        calculate_rubber_points(bRecords.contract.level, bRecords.contract.suit, bRecords.contract.doubled, bRecords.tricks, bRecords.declarer, dealio.deal.hands.get(bRecords.declarer).getHonors(bRecords.contract.suit))
+        calculate_rubber_points(bRecords.contract.level, bRecords.contract.suit, bRecords.contract.doubled, bRecords.tricks, bRecords.declarer, dealio.deal.hands.get(bRecords.declarer).getHonors(bRecords.contract.suit), debug)
 
         if dealio.deal.hands.get(Direction.NORTH).getPoints() > 12 :
             n_opening_hands += 1
