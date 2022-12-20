@@ -1,6 +1,6 @@
 from deal import Card, PlayerHand
 from deal_enums import Suit, Direction
-from play_utils import clear_rubber_points, print_rubber_points, calculate_vul, calculate_rubber_points, print_current_rubber_score, new_rubber
+from play_utils import clear_rubber_points, print_rubber_points, calculate_vul, calculate_rubber_points, print_current_rubber_score, new_rubber, print_total_rubber_score
 from lin import parse_single_lin, parse_multi_lin
 from board_record import Contract
 import math
@@ -73,6 +73,9 @@ s_opening_hands = 0
 e_opening_hands = 0
 w_opening_hands = 0
 
+ns_total_rubber_points = 0
+ew_total_rubber_points = 0
+
 def weird_division(n, d):
     return round((n / d) * 100, 2) if d else 0
 
@@ -115,6 +118,9 @@ def clear_rubber():
 
     global ns_points_rubber
     global ew_points_rubber
+
+    global ns_total_rubber_points
+    global ew_total_rubber_points
 
     n_points += n_points_rubber
     s_points += s_points_rubber
@@ -225,7 +231,8 @@ def print_points(rubber):
     print(bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Points:", ew_points_rubber, "(", weird_division(ew_points_rubber, ns_points_rubber + ew_points_rubber),"%)")
     print()
     if rubber == "final":
-        print("Current Rubber:", print_current_rubber_score())
+        print_current_rubber_score()
+        print_total_rubber_score()
 
 
 

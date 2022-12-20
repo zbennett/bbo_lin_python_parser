@@ -11,6 +11,8 @@ ns_leg = 0
 ew_leg = 0
 ns_rubber_points = 0
 ew_rubber_points = 0
+ns_total_rubber_points = 0
+ew_total_rubber_points = 0
 new_rubber = False
 
 def _evaluate_card(trump_suit: BiddingSuit, suit_led: Suit, card: Card) -> int:
@@ -160,19 +162,29 @@ def calculate_vul(declarer: Direction, points):
 def clear_rubber_points():
     global ew_rubber_points
     global ns_rubber_points
+    global ew_total_rubber_points
+    global ns_total_rubber_points
+
+    ew_total_rubber_points += ew_rubber_points
+    ns_total_rubber_points += ns_rubber_points
 
     ew_rubber_points = 0
     ns_rubber_points = 0
 
 def print_rubber_points():
-    print("____NS TOTAL RUBBER POINTS_____", ns_rubber_points)
-    print("____EW TOTAL RUBBER POINTS_____", ew_rubber_points)
+    if ns_rubber_points + ew_rubber_points != 0 :
+        print("____NS RUBBER POINTS_____", ns_rubber_points)
+        print("____EW RUBBER POINTS_____", ew_rubber_points)
 
 def print_current_rubber_score():
     print("N/S Leg:", ns_leg)
     print ("E/W Leg:", ew_leg)
     print("N/S Vul:", ns_vul)
     print("E/W Vul:", ew_vul)
+
+def print_total_rubber_score():
+    print("____NS TOTAL RUBBER POINTS_____", ns_total_rubber_points)
+    print("____EW TOTAL RUBBER POINTS_____", ew_total_rubber_points)
 
 def calculate_rubber_score(level: int, suit: Optional[BiddingSuit], doubled: int, tricks: int,  ) -> int:
     """
