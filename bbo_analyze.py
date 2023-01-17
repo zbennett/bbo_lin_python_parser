@@ -17,6 +17,7 @@ parser.add_argument('file_name', type=str)
 parser.add_argument('--rubbers', nargs='+')
 parser.add_argument('--single', action='store_true')
 parser.add_argument('--debug', action='store_true')
+parser.add_argument('--slam', action='store_true')
 
 args = parser.parse_args()
 
@@ -24,6 +25,8 @@ file_name = args.file_name
 rubber_list = args.rubbers
 single =args.single
 debug = args.debug
+slam = args.slam
+
 if args.rubbers == None :
     rubber_list = []
 
@@ -59,6 +62,16 @@ n_played_rubber = 0
 e_played_rubber = 0
 w_played_rubber = 0
 s_played_rubber = 0
+
+n_slam_played = 0
+e_slam_played = 0
+w_slam_played= 0
+s_slam_played = 0
+
+n_slam_made = 0
+e_slam_made = 0
+w_slam_made= 0
+s_slam_made = 0
 
 n_made = 0
 e_made = 0
@@ -223,10 +236,10 @@ def print_points(rubber):
     print("--------------------------------------------------------")
     # print()
     print("          ***", print_str, "***          ")
-    print(bRecords.names.get(Direction.NORTH), "Points:", n_points_rubber, "(", weird_division(n_points_rubber, total_points),"%)",bRecords.names.get(Direction.SOUTH), "Points:", s_points_rubber, "(", weird_division(s_points_rubber, total_points),"%)")
-    # print(bRecords.names.get(Direction.SOUTH), "Points:", s_points_rubber, "(", weird_division(s_points_rubber, total_points),"%)")
-    print(bRecords.names.get(Direction.EAST), "Points:", e_points_rubber, "(", weird_division(e_points_rubber, total_points),"%)",bRecords.names.get(Direction.WEST), "Points:", w_points_rubber, "(", weird_division(w_points_rubber, total_points),"%)")
-    # print(bRecords.names.get(Direction.WEST), "Points:", w_points_rubber, "(", weird_division(w_points_rubber, total_points),"%)")
+    print(bRecords.names.get(Direction.NORTH), "Points:", n_points_rubber, "(", weird_division(n_points_rubber, total_points),"%)")#,bRecords.names.get(Direction.SOUTH), "Points:", s_points_rubber, "(", weird_division(s_points_rubber, total_points),"%)")
+    print(bRecords.names.get(Direction.SOUTH), "Points:", s_points_rubber, "(", weird_division(s_points_rubber, total_points),"%)")
+    print(bRecords.names.get(Direction.EAST), "Points:", e_points_rubber, "(", weird_division(e_points_rubber, total_points),"%)")#,bRecords.names.get(Direction.WEST), "Points:", w_points_rubber, "(", weird_division(w_points_rubber, total_points),"%)")
+    print(bRecords.names.get(Direction.WEST), "Points:", w_points_rubber, "(", weird_division(w_points_rubber, total_points),"%)")
     print()
     # print(bRecords.names.get(Direction.NORTH), "Opening hands:", n_opening_hands)
     # print(bRecords.names.get(Direction.SOUTH), "Opening hands:", s_opening_hands)
@@ -239,6 +252,12 @@ def print_points(rubber):
         print(bRecords.names.get(Direction.EAST), "Played:", e_played_rubber, "and made:", e_made_rubber, "(", weird_division(e_made_rubber,e_played_rubber),"%)")
         print(bRecords.names.get(Direction.WEST), "Played:", w_played_rubber, "and made:", w_made_rubber, "(", weird_division(w_made_rubber,w_played_rubber),"%)")
         print()
+        if slam:
+            print(bRecords.names.get(Direction.NORTH), "Slams Played:", n_slam_played, "and made:", n_slam_made, "(", weird_division(n_slam_made, n_slam_played),"%)")
+            print(bRecords.names.get(Direction.SOUTH), "Slams Played:", s_slam_played, "and made:", s_slam_made, "(", weird_division(s_slam_made,s_slam_played),"%)")
+            print(bRecords.names.get(Direction.EAST), "Slams Played:", e_slam_played, "and made:", e_slam_made, "(", weird_division(e_slam_made,e_slam_played),"%)")
+            print(bRecords.names.get(Direction.WEST), "Slams Played:", w_slam_played, "and made:", w_slam_made, "(", weird_division(w_slam_made,w_slam_played),"%)")
+            print()
         # print(bRecords.names.get(Direction.NORTH), "Opening Hands:", n_opening_hands)
         # print(bRecords.names.get(Direction.SOUTH), "Opening Hands:", s_opening_hands)
         # print(bRecords.names.get(Direction.EAST), "Opening Hands:", e_opening_hands)
@@ -313,6 +332,29 @@ for dealio in thing:
             w_played_rubber  +=1
             if (bRecords.tricks - 6 ) >= bRecords.contract.level:
                 w_made_rubber += 1
+
+        if slam :
+            if bRecords.declarer == Direction.NORTH:
+                if bRecords.contract.level > 5:
+                    n_slam_played  += 1
+                    if (bRecords.tricks - 6 ) >= bRecords.contract.level:
+                        n_slam_made  += 1
+            elif bRecords.declarer == Direction.SOUTH:
+                if bRecords.contract.level > 5:
+                    s_slam_played  += 1
+                    if (bRecords.tricks - 6 ) >= bRecords.contract.level:
+                        s_slam_made  += 1
+            elif bRecords.declarer == Direction.EAST:
+                if bRecords.contract.level > 5:
+                    e_slam_played  += 1
+                    if (bRecords.tricks - 6 ) >= bRecords.contract.level:
+                        e_slam_made  += 1
+            elif bRecords.declarer == Direction.WEST:
+                if bRecords.contract.level > 5:
+                    w_slam_played  += 1
+                    if (bRecords.tricks - 6 ) >= bRecords.contract.level:
+                        w_slam_made  += 1
+
         if new_rubber() :
             print_points(str(rubber_inc))
             clear_rubber()
