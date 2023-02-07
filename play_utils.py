@@ -268,9 +268,8 @@ def calculate_rubber_points(level: int, suit: Optional[BiddingSuit], doubled: in
         else:
             ew_rubber_points += points
     if debug :
-        print(declarer.name, "Bid:", level, suit.name, "Made:", scoring_tricks)
+        print(declarer.name, str(level) + str(suit.abbreviation()), "Made:", scoring_tricks)
         print("NS/EW Points:", ns_rubber_points, ",", ew_rubber_points)
-        # print("East/West Rubber Points:", ew_rubber_points)
 
 def calculate_score(level: int, suit: Optional[BiddingSuit], doubled: int, tricks: int, vulnerable: bool) -> int:
     """
