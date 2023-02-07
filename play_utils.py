@@ -268,7 +268,25 @@ def calculate_rubber_points(level: int, suit: Optional[BiddingSuit], doubled: in
         else:
             ew_rubber_points += points
     if debug :
-        print(declarer.name, str(level) + str(suit.abbreviation()), "Made:", scoring_tricks)
+        prstr = ""
+        doublestr = ""
+        if scoring_tricks > level :
+            prstr = "[UP " + str(scoring_tricks - level) +"]"
+        elif scoring_tricks < level :
+            prstr = "[DOWN " + str(level + 6 - tricks)+"]"
+        else:
+            prstr = "[OTB]"
+
+        if honors == 150 :
+            prstr += " 150 Honors"
+        elif honors == 100 :
+            prstr += " 100 Honors"
+
+        if doubled == 1:
+            doublestr="X"
+        elif doubled == 2:
+            doublestr="XX"
+        print(declarer.name, str(level) + str(suit.abbreviation()) + str(doublestr), "Made:", scoring_tricks, prstr)
         print("NS/EW Points:", ns_rubber_points, ",", ew_rubber_points)
 
 def calculate_score(level: int, suit: Optional[BiddingSuit], doubled: int, tricks: int, vulnerable: bool) -> int:
