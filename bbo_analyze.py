@@ -307,6 +307,8 @@ for dealio in thing:
         #     print("Tricks won:", bRecords.tricks)
         calculate_rubber_points(bRecords.contract.level, bRecords.contract.suit, bRecords.contract.doubled, bRecords.tricks, bRecords.declarer, dealio.deal.hands.get(bRecords.declarer).getHonors(bRecords.contract.suit), debug)
 
+        calculate_vul(bRecords.declarer, bRecords.zach_score)
+        
         if dealio.deal.hands.get(Direction.NORTH).getPoints() > 12 :
             n_opening_hands += 1
         elif dealio.deal.hands.get(Direction.SOUTH).getPoints() > 12 :
