@@ -18,6 +18,7 @@ parser.add_argument('--rubbers', nargs='+')
 parser.add_argument('--single', action='store_true')
 parser.add_argument('--debug', action='store_true')
 parser.add_argument('--slam', action='store_true')
+parser.add_argument('--open', action='store_true')
 
 args = parser.parse_args()
 
@@ -26,6 +27,7 @@ rubber_list = args.rubbers
 single =args.single
 debug = args.debug
 slam = args.slam
+disp_open = args.open
 
 if args.rubbers == None :
     rubber_list = []
@@ -258,11 +260,12 @@ def print_points(rubber):
             print(bRecords.names.get(Direction.EAST), "Slams Played:", e_slam_played, "and made:", e_slam_made, "(", weird_division(e_slam_made,e_slam_played),"%)")
             print(bRecords.names.get(Direction.WEST), "Slams Played:", w_slam_played, "and made:", w_slam_made, "(", weird_division(w_slam_made,w_slam_played),"%)")
             print()
-        # print(bRecords.names.get(Direction.NORTH), "Opening Hands:", n_opening_hands)
-        # print(bRecords.names.get(Direction.SOUTH), "Opening Hands:", s_opening_hands)
-        # print(bRecords.names.get(Direction.EAST), "Opening Hands:", e_opening_hands)
-        # print(bRecords.names.get(Direction.WEST), "Opening Hands:", w_opening_hands)
-        # print()
+        if disp_open: 
+            print(bRecords.names.get(Direction.NORTH), "Opening Hands:", n_opening_hands)
+            print(bRecords.names.get(Direction.SOUTH), "Opening Hands:", s_opening_hands)
+            print(bRecords.names.get(Direction.EAST), "Opening Hands:", e_opening_hands)
+            print(bRecords.names.get(Direction.WEST), "Opening Hands:", w_opening_hands)
+            print()
     print(bRecords.names.get(Direction.NORTH), "/", bRecords.names.get(Direction.SOUTH), "Points:", ns_points_rubber, "(", weird_division(ns_points_rubber, ns_points_rubber + ew_points_rubber),"%)")
     print(bRecords.names.get(Direction.EAST), "/", bRecords.names.get(Direction.WEST), "Points:", ew_points_rubber, "(", weird_division(ew_points_rubber, ns_points_rubber + ew_points_rubber),"%)")
     print()
@@ -298,7 +301,7 @@ for dealio in thing:
         e_points_rubber += dealio.deal.hands.get(Direction.EAST).getPoints()
         w_points_rubber += dealio.deal.hands.get(Direction.WEST).getPoints()
 
-        calculate_vul(bRecords.declarer, bRecords.zach_score)
+        #calculate_vul(bRecords.declarer, bRecords.zach_score)
         # honors = dealio.deal.hands.get(bRecords.declarer).getHonors(bRecords.contract.suit)
         # if honors != 0 :
         #     print("HONORS:",honors)
@@ -311,11 +314,11 @@ for dealio in thing:
         
         if dealio.deal.hands.get(Direction.NORTH).getPoints() > 12 :
             n_opening_hands += 1
-        elif dealio.deal.hands.get(Direction.SOUTH).getPoints() > 12 :
+        if dealio.deal.hands.get(Direction.SOUTH).getPoints() > 12 :
             s_opening_hands += 1
-        elif dealio.deal.hands.get(Direction.EAST).getPoints() > 12 :
+        if dealio.deal.hands.get(Direction.EAST).getPoints() > 12 :
             e_opening_hands += 1
-        elif dealio.deal.hands.get(Direction.WEST).getPoints() > 12 :
+        if dealio.deal.hands.get(Direction.WEST).getPoints() > 12 :
             w_opening_hands += 1
 
         if bRecords.declarer == Direction.NORTH:
