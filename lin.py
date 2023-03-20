@@ -308,7 +308,6 @@ def parse_multi_lin(file_path: Path) -> List[DealRecord]:
         #     print(list(parsed_header.values())[val])
         for line in lin_file:
             if line.isspace() or line == "":
-                print('continue')
                 continue
             # Boards are split with a qx node
             if line.startswith("qx"):
